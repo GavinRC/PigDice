@@ -37,7 +37,7 @@ int main() {
     srand(time(0));
     GameState my_game; // instantiate a GameState object
     display_rules(); // call the display_rules function
-    play_game(my_game); // call the play_game function and pass the GameState object
+    //play_game(my_game); // call the play_game function and pass the GameState object
     return 0;
 }
 
