@@ -1,15 +1,19 @@
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 struct GameState {
     int turn_count = 1;
     int game_score = 0;
     int score_this_turn = 0;
+    bool turn_over = false;
 };
 
 static void takeTurn(GameState &gs);
 static int roll();
 static void playGame(GameState &gs);
 static void display_rules();
+static void hold(GameState &gs);
 
 void display_rules() {
     std::cout << "Let's Play PIG Dice!\n"
@@ -35,7 +39,7 @@ void playGame(GameState &gs) {
 void takeTurn(GameState &gs) {
     std::pmr::string response;
     std::cout << "TURN " << gs.turn_count << " - Game Score: " << gs.game_score <<std::endl;
-    while (true) {
+    while (gs.turn_over == false) {
         std::cout << "roll or hold? (r/h): ";
         std::cin >> response;
         if (response == "r") {
@@ -45,25 +49,30 @@ void takeTurn(GameState &gs) {
             if (randomNumber == 1) {
                 std::cout << "\nTurn over. No score." << std::endl;
                 gs.score_this_turn = 0;
-                break;
+                gs.turn_over = true;
             }
 
             std::cout << " - Running score this turn: " << gs.score_this_turn << std::endl;
         } else if (response == "h") {
-            break;
+            hold(gs);
         }
     }
     std::cout << "Score Banked This Turn: " << gs.score_this_turn << "\n" << std::endl;
     gs.game_score += gs.score_this_turn;
     gs.score_this_turn = 0;
+    gs.turn_over = false;
+}
+
+void hold(GameState &gs) {
+    gs.turn_over = true;
 }
 
 int roll() {
-    return (rand() % 6 + 1);
+    srand(time(nullptr));
+    return (rand() % 6) + 1;
 }
 
 int main() {
-    srand(time(nullptr));
     GameState my_game;
     display_rules();
     playGame(my_game);
