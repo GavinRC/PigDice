@@ -1,12 +1,9 @@
-#include <functional>
 #include <iostream>
 
-// Build your solution starting from this code.
 struct GameState {
-    int turn_count = 0;
+    int turn_count = 1;
     int game_score = 0;
     int score_this_turn = 0;
-    bool game_over = false;
 };
 
 static void takeTurn(GameState &gs);
@@ -25,12 +22,13 @@ void display_rules() {
 }
 
 void playGame(GameState &gs) {
-    while (!gs.game_over) {
+    while (true) {
         takeTurn(gs);
         if (gs.game_score >= 20) {
             std::cout << "You finished with a final score of " << gs.game_score << " in " << gs.turn_count << " turns! \nThanks for playing PIG Dice!" << std::endl;
             break;
         }
+        gs.turn_count++;
     }
 }
 
@@ -38,24 +36,24 @@ void takeTurn(GameState &gs) {
     std::pmr::string response;
     std::cout << "TURN " << gs.turn_count << " - Game Score: " << gs.game_score <<std::endl;
     while (true) {
-        std::cout << "roll or hold? (r/h):";
-        // getline(std::cin, response);
+        std::cout << "roll or hold? (r/h): ";
         std::cin >> response;
         if (response == "r") {
-            int rnumber = roll();
-            gs.score_this_turn += rnumber;
-            std::cout << "Die: " << rnumber << " - Running score this turn: " << gs.score_this_turn <<std::endl;
-            if (rnumber == 1) {
-                std::cout << "Turn over. No score." << std::endl;
+            int randomNumber = roll();
+            gs.score_this_turn += randomNumber;
+            std::cout << "Die: " << randomNumber;
+            if (randomNumber == 1) {
+                std::cout << "\nTurn over. No score." << std::endl;
                 gs.score_this_turn = 0;
                 break;
             }
+
+            std::cout << " - Running score this turn: " << gs.score_this_turn << std::endl;
         } else if (response == "h") {
             break;
         }
     }
     std::cout << "Score Banked This Turn: " << gs.score_this_turn << "\n" << std::endl;
-    gs.turn_count++;
     gs.game_score += gs.score_this_turn;
     gs.score_this_turn = 0;
 }
@@ -66,10 +64,8 @@ int roll() {
 
 int main() {
     srand(time(nullptr));
-    GameState my_game; // instantiate a GameState object
-    display_rules(); // call the display_rules function
+    GameState my_game;
+    display_rules();
     playGame(my_game);
-    //play_game(my_game); // call the play_game function and pass the GameState object
     return 0;
 }
-
