@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <random>
 
 struct GameState {
     int turn_count = 1;
@@ -9,6 +10,44 @@ struct GameState {
     bool turn_over = false;
 };
 
+class Die {
+    int m_value;
+    int m_numberOfSides;
+public:
+    Die() { // default constructor
+        m_numberOfSides = 6;
+        m_value = 0;
+    }
+    Die(int numberOfSides) {
+        m_numberOfSides = numberOfSides;
+        m_value = 0;
+    }
+    void rollDie() {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dis(1, m_numberOfSides);
+        m_value = dis(gen);
+    }
+
+    void setNumberOfSides(int numberOfSides) {
+        switch (numberOfSides) {
+            case 4:
+                m_numberOfSides = 4;
+                break;
+            case 6:
+                m_numberOfSides = 6;
+                break;
+            case 8:
+                m_numberOfSides = 8;
+                break;
+            default:
+                m_numberOfSides = 6;
+        }
+    }
+    int getDieNumber() {
+        return m_value;
+    }
+};
 static void takeTurn(GameState &gs);
 static int roll();
 static void playGame(GameState &gs);
@@ -74,6 +113,8 @@ int roll() {
 
 int main() {
     GameState my_game;
+    Die myDie;
+    myDie.rollDie();
     display_rules();
     playGame(my_game);
     return 0;
