@@ -11,41 +11,49 @@ struct GameState {
 };
 
 class Die {
-    int m_value;
-    int m_numberOfSides;
+    int m_dieValue;
+    int m_numOfSides;
 public:
     Die() { // default constructor
-        m_numberOfSides = 6;
-        m_value = 0;
+        m_numOfSides = 6;
+        m_dieValue = 0;
+        rollDie();
     }
     Die(int numberOfSides) {
-        m_numberOfSides = numberOfSides;
-        m_value = 0;
+        m_numOfSides = numberOfSides;
+        m_dieValue = 0;
+        rollDie();
     }
     void rollDie() {
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_int_distribution<> dis(1, m_numberOfSides);
-        m_value = dis(gen);
+        std::uniform_int_distribution<> dis(1, m_numOfSides);
+        m_dieValue = dis(gen);
     }
 
     void setNumberOfSides(int numberOfSides) {
         switch (numberOfSides) {
-            case 4:
-                m_numberOfSides = 4;
+            case 2:
+                m_numOfSides = 2;
                 break;
-            case 6:
-                m_numberOfSides = 6;
+            case 4:
+                m_numOfSides = 4;
                 break;
             case 8:
-                m_numberOfSides = 8;
+                m_numOfSides = 8;
                 break;
+            case 12:
+                m_numOfSides = 12;
             default:
-                m_numberOfSides = 6;
+                m_numOfSides = 6;
         }
     }
     int getDieNumber() {
-        return m_value;
+        return m_dieValue;
+    }
+
+    int getNumberOfSides() {
+        return m_numOfSides;
     }
 };
 static void takeTurn(GameState &gs);
@@ -89,6 +97,7 @@ void takeTurn(GameState &gs) {
                 std::cout << "\nTurn over. No score." << std::endl;
                 gs.score_this_turn = 0;
                 gs.turn_over = true;
+                break;
             }
 
             std::cout << " - Running score this turn: " << gs.score_this_turn << std::endl;
@@ -107,14 +116,14 @@ void hold(GameState &gs) {
 }
 
 int roll() {
-    srand(time(nullptr));
-    return (rand() % 6) + 1;
+    Die myDie;
+    myDie.rollDie();
+    return myDie.getDieNumber();
 }
 
 int main() {
     GameState my_game;
-    Die myDie;
-    myDie.rollDie();
+
     display_rules();
     playGame(my_game);
     return 0;
