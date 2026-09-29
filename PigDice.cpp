@@ -1,8 +1,6 @@
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
 #include <random>
-
+#include "DIE.h"
 struct GameState {
     int turn_count = 1;
     int game_score = 0;
@@ -10,52 +8,7 @@ struct GameState {
     bool turn_over = false;
 };
 
-class Die {
-    int m_dieValue;
-    int m_numOfSides;
-public:
-    Die() { // default constructor
-        m_numOfSides = 6;
-        m_dieValue = 0;
-        rollDie();
-    }
-    Die(int numberOfSides) {
-        m_numOfSides = numberOfSides;
-        m_dieValue = 0;
-        rollDie();
-    }
-    void rollDie() {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<> dis(1, m_numOfSides);
-        m_dieValue = dis(gen);
-    }
 
-    void setNumberOfSides(int numberOfSides) {
-        switch (numberOfSides) {
-            case 2:
-                m_numOfSides = 2;
-                break;
-            case 4:
-                m_numOfSides = 4;
-                break;
-            case 8:
-                m_numOfSides = 8;
-                break;
-            case 12:
-                m_numOfSides = 12;
-            default:
-                m_numOfSides = 6;
-        }
-    }
-    int getDieNumber() {
-        return m_dieValue;
-    }
-
-    int getNumberOfSides() {
-        return m_numOfSides;
-    }
-};
 static void takeTurn(GameState &gs);
 static int roll();
 static void playGame(GameState &gs);
@@ -84,7 +37,7 @@ void playGame(GameState &gs) {
 }
 
 void takeTurn(GameState &gs) {
-    std::pmr::string response;
+    std::string response;
     std::cout << "TURN " << gs.turn_count << " - Game Score: " << gs.game_score <<std::endl;
     while (gs.turn_over == false) {
         std::cout << "roll or hold? (r/h): ";
