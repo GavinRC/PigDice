@@ -8,18 +8,20 @@
 
 class Turn {
     int m_turnCount;
-    int m_turnScore;
+    int m_scoreThisTurn;
     bool m_turnOver;
     char m_choice;
     Die m_myDie;
 public:
     Turn();
     //Turn(&);
-    int getTurnCount();
-    int getScoreThisTurn();
+    int getTurnCount() const;
+    int getScoreThisTurn() const;
     void takeTurn();
     void resetTurnOver();
-    void resetGameOver();
+    void resetScoreThisTurn();
+private:
+    void roll();
 };
 
 
