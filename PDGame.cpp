@@ -4,6 +4,7 @@
 PDGame::PDGame() {
     m_gameOver = false;
     m_gameScore = 0;
+    m_myTurn.setParentGame(this);
     displayRules();
     playGame();
 }
@@ -28,4 +29,8 @@ void PDGame::playGame() {
         }
         m_myTurn.resetTurnOver();
     }
+}
+
+int PDGame::getGameScore() const {
+    return m_gameScore;
 }

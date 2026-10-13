@@ -1,5 +1,6 @@
 #include "Turn.h"
 #include <iostream>
+#include "PDGame.h"
 Turn::Turn() {
     m_turnCount = 1;
     m_scoreThisTurn = 0;
@@ -17,7 +18,7 @@ int Turn::getScoreThisTurn() const {
 
 void Turn::takeTurn() {
     std::string response;
-    std::cout << "TURN " << m_turnCount << " - Game Score: " << 0 <<std::endl; // TODO: Use a ptr to get game score instead of 0
+    std::cout << "TURN " << m_turnCount << " - Game Score: " << m_parentGame->getGameScore() << std::endl;
     while (m_turnOver == false) {
         std::cout << "roll or hold? (r/h): ";
         std::cin >> response;
@@ -28,8 +29,6 @@ void Turn::takeTurn() {
         }
     }
     std::cout << "Score Banked This Turn: " << m_scoreThisTurn << "\n" << std::endl;
-    // gs.game_score += gs.score_this_turn; TODO: move this into PDGame
-    // resetTurnOver(); // TODO: move this into PDGame
 }
 
 void Turn::resetTurnOver() {
@@ -54,4 +53,8 @@ void Turn::roll() {
     }
     m_scoreThisTurn += randomNumber;
     std::cout << " - Running score this turn: " << m_scoreThisTurn << std::endl;
+}
+
+void Turn::setParentGame(PDGame* parentGame) {
+    m_parentGame = parentGame;
 }

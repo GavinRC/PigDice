@@ -1,7 +1,3 @@
-//
-// Created by gavin on 10/6/2026.
-//
-
 #ifndef PIGDICE_PDGAME_H
 #define PIGDICE_PDGAME_H
 #include "Turn.h"
@@ -13,6 +9,7 @@ class PDGame {
 
 public:
     PDGame();
+    int getGameScore() const;
 private:
     static void displayRules();
     void playGame();
