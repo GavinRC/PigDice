@@ -20,12 +20,12 @@ void PDGame::displayRules() {
 }
 
 void PDGame::playGame() {
-    while (true) {
+    while (!m_gameOver) {
         m_myTurn.takeTurn();
         m_gameScore += m_myTurn.getScoreThisTurn();
         if (m_gameScore >= 20) {
             std::cout << "You finished with a final score of " << m_gameScore << " in " << m_myTurn.getTurnCount() << " turns! \nThanks for playing PIG Dice!" << std::endl;
-            break;
+            m_gameOver = true;
         }
         m_myTurn.resetTurnOver();
     }
